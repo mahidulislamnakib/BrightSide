@@ -12,6 +12,7 @@ const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
 const BangladeshPage = lazy(() => import('@/pages/BangladeshPage'));
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const AdminPage = lazy(() => import('@/pages/AdminPage'));
+const BookmarksPage = lazy(() => import('@/pages/BookmarksPage'));
 
 function LoadingScreen() {
   return (
@@ -100,6 +101,7 @@ export default function App() {
               <Route path="/bangladesh" element={<BangladeshPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/bookmarks" element={<BookmarksPage />} />
             </Routes>
           </PageTransition>
         </Suspense>

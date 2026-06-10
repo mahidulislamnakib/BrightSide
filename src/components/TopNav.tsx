@@ -10,6 +10,7 @@ const navLinks = [
   { label: 'Feed', path: '/feed' },
   { label: 'Dashboard', path: '/dashboard' },
   { label: 'Bangladesh', path: '/bangladesh' },
+  { label: 'Bookmarks', path: '/bookmarks' },
 ];
 
 export default function TopNav() {

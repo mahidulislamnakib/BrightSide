@@ -67,6 +67,15 @@ export const readingHistory = mysqlTable("reading_history", {
   actionTaken: varchar("action_taken", { length: 64 }),
 });
 
+// ─── Bookmarks ───
+export const bookmarks = mysqlTable("bookmarks", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull(),
+  articleId: int("article_id").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  note: text("note"),
+});
+
 // ─── Categories (reference table) ───
 // ─── Users ───
 export const users = mysqlTable("users", {

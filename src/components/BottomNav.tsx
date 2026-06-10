@@ -1,12 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sunrise, FileText, BarChart3, Globe } from 'lucide-react';
+import { Sunrise, FileText, BarChart3, Globe, Bookmark } from 'lucide-react';
 
 const navItems = [
   { icon: Sunrise, label: 'Home', path: '/' },
   { icon: FileText, label: 'Feed', path: '/feed' },
+  { icon: Bookmark, label: 'Saved', path: '/bookmarks' },
   { icon: BarChart3, label: 'Dashboard', path: '/dashboard' },
-  { icon: Globe, label: 'Bangladesh', path: '/bangladesh' },
+  { icon: Globe, label: 'Global', path: '/bangladesh' },
 ];
 
 export default function BottomNav() {

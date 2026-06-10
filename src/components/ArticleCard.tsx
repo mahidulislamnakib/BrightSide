@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Bookmark, Share2, ImageIcon } from 'lucide-react';
+import { Share2, ImageIcon } from 'lucide-react';
 import type { Article } from '@/data/articles';
 import { timeAgo, getTierColor, getTierLabel } from '@/lib/classifier';
 import HopeScoreBadge from './HopeScoreBadge';
+import BookmarkButton from './BookmarkButton';
 
 interface ArticleCardProps {
   article: Article;
@@ -93,9 +94,7 @@ export default function ArticleCard({ article, compact = false, onShare }: Artic
                   <ImageIcon size={18} />
                 </button>
               )}
-              <button className="p-1.5 text-warmgrey hover:text-coral transition-colors">
-                <Bookmark size={18} />
-              </button>
+              <BookmarkButton articleId={Number(article.id)} size={18} />
               <button className="p-1.5 text-warmgrey hover:text-coral transition-colors">
                 <Share2 size={18} />
               </button>
