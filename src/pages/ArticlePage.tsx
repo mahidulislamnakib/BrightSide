@@ -1,12 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Heart, Hand, BookOpen, ExternalLink, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Heart, Hand, BookOpen, ShieldCheck, ImageIcon } from 'lucide-react';
 import { trpc } from '@/providers/trpc';
 import { getWhyThisMatters } from '@/lib/classifier';
 import ArticleCard from '@/components/ArticleCard';
 import ScrollReveal from '@/components/ScrollReveal';
 import LuminousHopeOrb from '@/components/LuminousHopeOrb';
+import ShareCardGenerator from '@/components/ShareCardGenerator';
 
 function RadarChart({ scores, size = 280 }: { scores: number[]; size?: number }) {
   const colors = ['#E8644B', '#F4A261', '#C45C3E', '#F4D0C4', '#9B4D36'];
@@ -64,6 +65,7 @@ export default function ArticlePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const articleId = Number(id) || 0;
+  const [shareOpen, setShareOpen] = useState(false);
 
   const { data: article, isLoading } = trpc.article.byId.useQuery(
     { id: articleId },
@@ -101,7 +103,6 @@ export default function ArticlePage() {
     );
   }
 
-  const actions = article.actionsJson ? JSON.parse(article.actionsJson) : [];
   const scoreDimensions = [
     Number(article.verifiedFacts),
     Number(article.systemicImpact),
@@ -118,9 +119,10 @@ export default function ArticlePage() {
   ];
 
   const actionDefaults = [
-    { type: 'donate', label: 'Give Now', desc: 'Support the organizations making this happen' },
-    { type: 'volunteer', label: 'Find Opportunities', desc: 'Find local opportunities to contribute' },
-    { type: 'learn', label: 'Explore Resources', desc: 'Explore resources and learn more' },
+    { type: 'donate', label: 'Give Now', desc: 'Support the organizations making this happen', icon: Heart },
+    { type: 'volunteer', label: 'Find Opportunities', desc: 'Find local opportunities to contribute', icon: Hand },
+    { type: 'learn', label: 'Explore Resources', desc: 'Explore resources and learn more', icon: BookOpen },
+    { type: 'share', label: 'Create Card', desc: 'Generate a shareable card for social media', icon: ImageIcon },
   ];
 
   return (
@@ -194,28 +196,45 @@ export default function ArticlePage() {
           </div>
         </ScrollReveal>
 
-        {actions.length > 0 && (
-          <ScrollReveal>
-            <h3 className="caption-style text-coral mb-5">TAKE ACTION</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-14">
-              {actions.map((action: { type: string; label: string; url: string }, i: number) => {
-                const defaults = actionDefaults[i] || { label: 'Learn More', desc: 'Explore resources' };
-                const icons = [Heart, Hand, BookOpen];
-                const Icon = icons[i] || BookOpen;
-                return (
-                  <motion.div key={action.type} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }} className="bg-peach rounded-card p-6 text-center">
-                    <Icon size={24} className={i < 2 ? 'text-coral-bright mx-auto mb-3' : 'text-coral mx-auto mb-3'} />
-                    <h4 className="font-body text-sm font-semibold text-charcoal mb-1 capitalize">{action.type}</h4>
-                    <p className="font-body text-xs text-warmgrey mb-4">{defaults.desc}</p>
-                    <a href={action.url} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-2 px-5 py-2 rounded-button font-body text-sm font-medium transition-all duration-200 hover:scale-[1.02] ${i < 2 ? 'bg-gradient-to-b from-coral-bright to-amber text-cream' : 'border border-coral text-coral bg-transparent'}`}>
-                      {action.label} <ExternalLink size={12} />
-                    </a>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </ScrollReveal>
-        )}
+        <ScrollReveal>
+          <h3 className="caption-style text-coral mb-5">TAKE ACTION</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
+            {actionDefaults.map((action, i) => {
+              const ActionIcon = action.icon;
+              const isPrimary = i < 2;
+              return (
+                <motion.div key={action.type} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }} className="bg-peach rounded-card p-6 text-center">
+                  <ActionIcon size={24} className={isPrimary ? 'text-coral-bright mx-auto mb-3' : 'text-coral mx-auto mb-3'} />
+                  <h4 className="font-body text-sm font-semibold text-charcoal mb-1 capitalize">{action.type}</h4>
+                  <p className="font-body text-xs text-warmgrey mb-4">{action.desc}</p>
+                  {action.type === 'share' ? (
+                    <button onClick={() => setShareOpen(true)} className="inline-flex items-center gap-2 px-5 py-2 rounded-button border border-coral text-coral bg-transparent font-body text-sm font-medium hover:bg-coral hover:text-cream transition-all duration-200 hover:scale-[1.02]">
+                      {action.label} <ImageIcon size={12} />
+                    </button>
+                  ) : (
+                    <span className={`inline-flex items-center gap-2 px-5 py-2 rounded-button font-body text-sm font-medium ${isPrimary ? 'bg-gradient-to-b from-coral-bright to-amber text-cream' : 'border border-coral text-coral bg-transparent'}`}>
+                      {action.label}
+                    </span>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </ScrollReveal>
+
+        {/* Share Card Generator Modal */}
+        <ShareCardGenerator
+          isOpen={shareOpen}
+          onClose={() => setShareOpen(false)}
+          article={{
+            title: article.title,
+            summary: article.summary ?? '',
+            category: article.category,
+            hopeScore: Number(article.hopeScore),
+            tier: article.tier,
+            region: article.region,
+          }}
+        />
 
         {related && related.length > 0 && (
           <ScrollReveal>

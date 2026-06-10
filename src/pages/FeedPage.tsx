@@ -3,8 +3,10 @@ import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trpc } from '@/providers/trpc';
 import type { Mood } from '@/lib/classifier';
+import type { Article } from '@/data/articles';
 import { REGIONS } from '@/data/articles';
 import ArticleCard from '@/components/ArticleCard';
+import ShareCardGenerator from '@/components/ShareCardGenerator';
 import ScrollReveal from '@/components/ScrollReveal';
 
 const MOODS: { key: Mood; label: string; emoji: string }[] = [
@@ -24,6 +26,7 @@ export default function FeedPage() {
   );
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
+  const [shareArticle, setShareArticle] = useState<Article | null>(null);
 
   // Fetch articles from tRPC
   const utils = trpc.useUtils();
@@ -242,7 +245,9 @@ export default function FeedPage() {
                     <div key={gi}>
                       {group.map((article) => (
                         <div key={article.id} className="mb-6">
-                          <ArticleCard article={{
+                          <ArticleCard
+                            onShare={(a) => setShareArticle(a)}
+                            article={{
                             id: String(article.id),
                             title: article.title,
                             summary: article.summary ?? '',
@@ -283,6 +288,20 @@ export default function FeedPage() {
             )}
           </div>
         </div>
+
+        {/* Share Card Generator Modal */}
+        <ShareCardGenerator
+          isOpen={!!shareArticle}
+          onClose={() => setShareArticle(null)}
+          article={shareArticle ? {
+            title: shareArticle.title,
+            summary: shareArticle.summary,
+            category: shareArticle.category,
+            hopeScore: shareArticle.hopeScore,
+            tier: shareArticle.tier,
+            region: shareArticle.region,
+          } : null}
+        />
       </div>
     </div>
   );

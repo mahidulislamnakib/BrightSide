@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Bookmark, Share2 } from 'lucide-react';
+import { Bookmark, Share2, ImageIcon } from 'lucide-react';
 import type { Article } from '@/data/articles';
 import { timeAgo, getTierColor, getTierLabel } from '@/lib/classifier';
 import HopeScoreBadge from './HopeScoreBadge';
@@ -8,9 +8,10 @@ import HopeScoreBadge from './HopeScoreBadge';
 interface ArticleCardProps {
   article: Article;
   compact?: boolean;
+  onShare?: (article: Article) => void;
 }
 
-export default function ArticleCard({ article, compact = false }: ArticleCardProps) {
+export default function ArticleCard({ article, compact = false, onShare }: ArticleCardProps) {
   const tierColor = getTierColor(article.tier);
 
   if (compact) {
@@ -82,7 +83,16 @@ export default function ArticleCard({ article, compact = false }: ArticleCardPro
               </span>
               <span className="caption-style text-warmgrey">{timeAgo(article.publishedAt)}</span>
             </div>
-            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              {onShare && (
+                <button
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); onShare(article); }}
+                  className="p-1.5 text-warmgrey hover:text-coral transition-colors"
+                  title="Generate share card"
+                >
+                  <ImageIcon size={18} />
+                </button>
+              )}
               <button className="p-1.5 text-warmgrey hover:text-coral transition-colors">
                 <Bookmark size={18} />
               </button>
