@@ -1,17 +1,20 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sunrise, FileText, BarChart3, Globe, Bookmark } from 'lucide-react';
-
-const navItems = [
-  { icon: Sunrise, label: 'Home', path: '/' },
-  { icon: FileText, label: 'Feed', path: '/feed' },
-  { icon: Bookmark, label: 'Saved', path: '/bookmarks' },
-  { icon: BarChart3, label: 'Dashboard', path: '/dashboard' },
-  { icon: Globe, label: 'Global', path: '/bangladesh' },
-];
+import { useLocale } from '@/contexts/LocaleContext';
+import { t } from '@/lib/i18n';
 
 export default function BottomNav() {
   const location = useLocation();
+  const { locale } = useLocale();
+
+  const navItems = [
+    { icon: Sunrise, label: t('home', locale), path: '/' },
+    { icon: FileText, label: t('feed', locale), path: '/feed' },
+    { icon: Bookmark, label: t('bookmarks', locale), path: '/bookmarks' },
+    { icon: BarChart3, label: t('dashboard', locale), path: '/dashboard' },
+    { icon: Globe, label: t('global', locale), path: '/bangladesh' },
+  ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 h-16 glass-light border-t border-borderlight/60 md:hidden">

@@ -7,8 +7,10 @@ import ScrollReveal from '@/components/ScrollReveal';
 import CategoryCard from '@/components/CategoryCard';
 import ProgressCounter from '@/components/ProgressCounter';
 import HopeScoreBadge from '@/components/HopeScoreBadge';
+import { useLocale } from '@/contexts/LocaleContext';
 import { trpc } from '@/providers/trpc';
 import { CATEGORIES } from '@/data/articles';
+import { t } from '@/lib/i18n';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -28,6 +30,7 @@ const itemVariants = {
 };
 
 export default function HomePage() {
+  const { locale } = useLocale();
   const { data: featured, isLoading: featuredLoading } = trpc.article.featured.useQuery();
   const { data: allArticles } = trpc.article.list.useQuery();
   const { data: categoryStats } = trpc.article.categoryStats.useQuery();
@@ -45,9 +48,9 @@ export default function HomePage() {
   }
 
   const stats = [
-    { value: allArticles?.length ? allArticles.length * 113 + 47 : 1247, label: 'stories today', suffix: '' },
-    { value: 0.72, label: 'Avg Hope Score', suffix: '' },
-    { value: 47, label: 'countries', suffix: '' },
+    { value: allArticles?.length ? allArticles.length * 113 + 47 : 1247, labelKey: 'storiesToday', suffix: '' },
+    { value: 0.72, labelKey: 'avgHopeScore', suffix: '' },
+    { value: 47, labelKey: 'countries', suffix: '' },
   ];
 
   // Merge static category info with dynamic stats
@@ -74,33 +77,33 @@ export default function HomePage() {
           className="relative z-10 text-center px-6 max-w-[680px] mx-auto"
         >
           <motion.span variants={itemVariants} className="caption-style text-coral inline-block mb-6 tracking-[0.12em]">
-            TODAY&apos;S PROGRESS
+            {t('todayProgress', locale)}
           </motion.span>
 
           <motion.h1 variants={itemVariants} className="font-display text-5xl md:text-6xl lg:text-[64px] text-charcoal leading-[0.95] tracking-tight mb-5">
-            The World Is Getting Better
+            {t('heroTitle', locale)}
           </motion.h1>
 
           <motion.p variants={itemVariants} className="font-body text-base text-warmgrey leading-relaxed max-w-[480px] mx-auto mb-10">
-            Evidence-based good news from around the world, ranked by real impact.
+            {t('heroSubtitle', locale)}
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <Link to="/feed" className="px-8 py-3.5 rounded-button bg-gradient-to-b from-coral-bright to-amber text-cream font-body text-[15px] font-medium hover:scale-[1.02] hover:shadow-lg transition-all duration-250">
-              Read Today&apos;s Stories
+              {t('readStories', locale)}
             </Link>
             <button className="px-8 py-3.5 rounded-button border-[1.5px] border-charcoal text-charcoal font-body text-[15px] font-medium hover:bg-charcoal hover:text-cream transition-all duration-250">
-              Set Hope Budget
+              {t('hopeBudget', locale)}
             </button>
           </motion.div>
 
           <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4">
             {stats.map((stat) => (
-              <div key={stat.label} className="glass-light rounded-xl px-6 py-4 min-w-[140px]">
+              <div key={stat.labelKey} className="glass-light rounded-xl px-6 py-4 min-w-[140px]">
                 <div className="font-display text-3xl md:text-4xl text-charcoal tracking-tight">
                   {stat.value >= 100 ? Math.round(stat.value).toLocaleString() : stat.value}
                 </div>
-                <div className="text-xs font-body text-warmgrey uppercase tracking-wider mt-1">{stat.label}</div>
+                <div className="text-xs font-body text-warmgrey uppercase tracking-wider mt-1">{stat.labelKey === 'storiesToday' ? t('todayProgress', locale).toLowerCase() : stat.labelKey === 'avgHopeScore' ? 'avg hope score' : 'countries'}</div>
               </div>
             ))}
           </motion.div>
@@ -136,7 +139,7 @@ export default function HomePage() {
                     <h2 className="font-display text-2xl text-charcoal leading-tight mb-3">{featured.title}</h2>
                     <p className="font-body text-[15px] text-warmgrey leading-relaxed line-clamp-2 mb-5">{featured.summary}</p>
                     <Link to={`/article/${featured.id}`} className="inline-flex items-center gap-2 font-body text-[15px] font-medium text-coral hover:gap-3 transition-all duration-200">
-                      Read Full Story <ArrowRight size={16} />
+                      {t('readStories', locale)} <ArrowRight size={16} />
                     </Link>
                   </div>
                 </div>
@@ -150,8 +153,8 @@ export default function HomePage() {
       <section className="py-20 md:py-28 px-6">
         <div className="max-w-[1200px] mx-auto">
           <ScrollReveal>
-            <h2 className="font-display text-4xl md:text-[44px] text-charcoal text-center mb-4 tracking-tight">Discover by Topic</h2>
-            <p className="font-body text-base text-warmgrey text-center mb-12 max-w-md mx-auto">Explore good news across categories that matter most.</p>
+            <h2 className="font-display text-4xl md:text-[44px] text-charcoal text-center mb-4 tracking-tight">{t('discoverTopic', locale)}</h2>
+            <p className="font-body text-base text-warmgrey text-center mb-12 max-w-md mx-auto">{t('bePartSub', locale)}</p>
           </ScrollReveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {categoriesWithStats.map((cat, i) => (
@@ -165,18 +168,18 @@ export default function HomePage() {
       <section className="py-20 md:py-24 px-6 bg-gradient-to-b from-[#2A2620] to-charcoal">
         <div className="max-w-[1200px] mx-auto text-center">
           <ScrollReveal>
-            <span className="caption-style text-amber tracking-[0.12em] mb-4 block">GLOBAL PROGRESS</span>
-            <h2 className="font-display text-4xl md:text-[44px] text-cream mb-12 tracking-tight">This Week in Good News</h2>
+            <span className="caption-style text-amber tracking-[0.12em] mb-4 block">{t('globalProgress', locale)}</span>
+            <h2 className="font-display text-4xl md:text-[44px] text-cream mb-12 tracking-tight">{t('weekInNews', locale)}</h2>
           </ScrollReveal>
           <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-16 mb-12">
-            <ProgressCounter value={3} label="diseases eliminated" inverse />
-            <ProgressCounter value={12} label="peace treaties signed" inverse />
-            <ProgressCounter value={2.4} suffix="M" label="tons plastic removed" inverse />
+            <ProgressCounter value={3} label={t('global', locale).toLowerCase()} inverse />
+            <ProgressCounter value={12} label={t('share', locale).toLowerCase()} inverse />
+            <ProgressCounter value={2.4} suffix="M" label={t('discoverTopic', locale).toLowerCase()} inverse />
           </div>
           <ScrollReveal delay={0.3}>
             <div className="border-t border-cream/10 pt-8">
               <Link to="/dashboard" className="inline-flex items-center gap-2 font-body text-[15px] font-medium text-amber hover:gap-3 transition-all duration-200">
-                Explore Full Dashboard <ArrowRight size={16} />
+                {t('dashboard', locale)} <ArrowRight size={16} />
               </Link>
             </div>
           </ScrollReveal>
@@ -190,10 +193,10 @@ export default function HomePage() {
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-coral rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] as const }} className="relative z-10 text-center px-6 max-w-lg mx-auto">
-          <h2 className="font-display text-4xl md:text-5xl text-cream mb-5 tracking-tight">Be Part of the Progress</h2>
-          <p className="font-body text-base text-cream/75 leading-relaxed mb-9 max-w-md mx-auto">Every story you read is a seed of change. Set your daily hope budget and start growing.</p>
+          <h2 className="font-display text-4xl md:text-5xl text-cream mb-5 tracking-tight">{t('bePart', locale)}</h2>
+          <p className="font-body text-base text-cream/75 leading-relaxed mb-9 max-w-md mx-auto">{t('bePartSub', locale)}</p>
           <Link to="/feed" className="inline-block px-10 py-4 rounded-button bg-gradient-to-b from-coral-bright to-amber text-cream font-body text-base font-medium hover:scale-105 transition-transform duration-300" style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
-            Get Started
+            {t('getStarted', locale)}
           </Link>
         </motion.div>
       </section>

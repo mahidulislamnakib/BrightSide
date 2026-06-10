@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { LocaleProvider } from '@/contexts/LocaleContext';
 import TopNav from '@/components/TopNav';
 import BottomNav from '@/components/BottomNav';
 import ToastNotification from '@/components/Toast';
@@ -39,6 +40,42 @@ function PageTransition({ children }: { children: React.ReactNode }) {
   );
 }
 
+export default function App() {
+  const location = useLocation();
+
+  return (
+    <LocaleProvider>
+      <div className="min-h-screen bg-cream">
+        <TopNav />
+
+        <AnimatePresence mode="wait">
+          <Suspense key={location.pathname} fallback={<LoadingScreen />}>
+            <PageTransition>
+              <Routes location={location}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/feed" element={<FeedPage />} />
+                <Route path="/article/:id" element={<ArticlePage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/bangladesh" element={<BangladeshPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/bookmarks" element={<BookmarksPage />} />
+                <Route path="/submit" element={<SubmitPage />} />
+                <Route path="/chat" element={<ChatPage />} />
+              </Routes>
+            </PageTransition>
+          </Suspense>
+        </AnimatePresence>
+
+        <Footer />
+        <BottomNav />
+        <FloatingChatButton />
+        <ToastNotification />
+      </div>
+    </LocaleProvider>
+  );
+}
+
 function Footer() {
   return (
     <footer className="bg-cream border-t border-borderlight/60 pt-12 pb-8 md:pb-8 px-6">
@@ -52,7 +89,7 @@ function Footer() {
             {[
               { label: 'Feed', path: '/feed' },
               { label: 'Dashboard', path: '/dashboard' },
-              { label: 'Bangladesh', path: '/bangladesh' },
+              { label: 'Global', path: '/bangladesh' },
               { label: 'About', path: '#' },
             ].map((link) => (
               <a
@@ -77,7 +114,6 @@ function Footer() {
           </div>
         </div>
         <div className="border-t border-borderlight pt-6">
-          {/* Email signup */}
           <div className="max-w-md mx-auto mb-8 text-center">
             <h4 className="font-display text-lg text-charcoal mb-2">Get Your Morning Brief</h4>
             <p className="font-body text-sm text-warmgrey mb-3">Daily good news, ranked by Hope Score, delivered to your inbox.</p>
@@ -92,39 +128,5 @@ function Footer() {
         </div>
       </div>
     </footer>
-  );
-}
-
-export default function App() {
-  const location = useLocation();
-
-  return (
-    <div className="min-h-screen bg-cream">
-      <TopNav />
-
-      <AnimatePresence mode="wait">
-        <Suspense key={location.pathname} fallback={<LoadingScreen />}>
-          <PageTransition>
-            <Routes location={location}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/feed" element={<FeedPage />} />
-              <Route path="/article/:id" element={<ArticlePage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/bangladesh" element={<BangladeshPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/bookmarks" element={<BookmarksPage />} />
-              <Route path="/submit" element={<SubmitPage />} />
-              <Route path="/chat" element={<ChatPage />} />
-            </Routes>
-          </PageTransition>
-        </Suspense>
-      </AnimatePresence>
-
-      <Footer />
-      <BottomNav />
-      <FloatingChatButton />
-      <ToastNotification />
-    </div>
   );
 }

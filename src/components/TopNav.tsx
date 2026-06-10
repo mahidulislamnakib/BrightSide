@@ -3,19 +3,15 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, LogOut, User, Search, Sparkles, Send } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useLocale } from '@/contexts/LocaleContext';
 import { trpc } from '@/providers/trpc';
-
-const navLinks = [
-  { label: 'Home', path: '/' },
-  { label: 'Feed', path: '/feed' },
-  { label: 'Bookmarks', path: '/bookmarks' },
-  { label: 'Dashboard', path: '/dashboard' },
-  { label: 'Bangladesh', path: '/bangladesh' },
-];
+import LanguageSwitcher from './LanguageSwitcher';
+import { t } from '@/lib/i18n';
 
 export default function TopNav() {
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
+  const { locale, setLocale } = useLocale();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -31,6 +27,14 @@ export default function TopNav() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
+  const navLinks = [
+    { label: t('home', locale), path: '/' },
+    { label: t('feed', locale), path: '/feed' },
+    { label: t('bookmarks', locale), path: '/bookmarks' },
+    { label: t('dashboard', locale), path: '/dashboard' },
+    { label: t('global', locale), path: '/bangladesh' },
+  ];
 
   return (
     <motion.header
@@ -75,8 +79,10 @@ export default function TopNav() {
           </Link>
           <Link to="/submit" className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-gradient-to-b from-coral-bright to-amber text-cream text-xs font-body font-medium hover:scale-105 transition-all">
             <Send size={12} />
-            Submit
+            {t('submit', locale)}
           </Link>
+
+          <LanguageSwitcher locale={locale} onChange={setLocale} />
 
           {isAuthenticated && user ? (
             <div className="flex items-center gap-3">
@@ -90,7 +96,7 @@ export default function TopNav() {
                 )}
                 <span className="font-body text-sm text-charcoal">{user.name || 'User'}</span>
               </div>
-              <button onClick={logout} className="p-1.5 text-warmgrey hover:text-coral transition-colors" title="Logout">
+              <button onClick={logout} className="p-1.5 text-warmgrey hover:text-coral transition-colors" title={t('logout', locale)}>
                 <LogOut size={16} />
               </button>
             </div>
@@ -99,7 +105,7 @@ export default function TopNav() {
               to="/login"
               className="font-body text-sm font-medium text-charcoal hover:text-coral transition-colors"
             >
-              Sign In
+              {t('login', locale)}
             </Link>
           )}
         </div>
@@ -120,11 +126,11 @@ export default function TopNav() {
               ))}
               {isAuthenticated ? (
                 <button onClick={() => { logout(); setMobileOpen(false); }} className="font-body text-[15px] font-medium py-2 text-warmgrey text-left flex items-center gap-2">
-                  <LogOut size={16} /> Sign Out
+                  <LogOut size={16} /> {t('logout', locale)}
                 </button>
               ) : (
                 <Link to="/login" onClick={() => setMobileOpen(false)} className="font-body text-[15px] font-medium py-2 text-coral">
-                  Sign In
+                  {t('login', locale)}
                 </Link>
               )}
             </nav>
@@ -136,6 +142,7 @@ export default function TopNav() {
 }
 
 function SearchBox() {
+  const { locale } = useLocale();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -163,7 +170,7 @@ function SearchBox() {
             value={query}
             onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
             onFocus={() => setOpen(true)}
-            placeholder="Search stories..."
+            placeholder={t('search', locale)}
             className="bg-transparent font-body text-sm text-charcoal placeholder:text-warmgrey/60 w-32 focus:w-48 transition-all outline-none"
           />
         </div>
@@ -185,7 +192,7 @@ function SearchBox() {
                   <img src={article.imageUrl ?? ''} alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="font-body text-sm text-charcoal truncate">{article.title}</p>
-                    <p className="font-body text-xs text-warmgrey">{article.category} · Score: {Math.round(Number(article.hopeScore) * 100)}</p>
+                    <p className="font-body text-xs text-warmgrey">{article.category} &middot; Score: {Math.round(Number(article.hopeScore) * 100)}</p>
                   </div>
                 </a>
               ))}
