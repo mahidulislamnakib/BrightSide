@@ -76,6 +76,33 @@ export const bookmarks = mysqlTable("bookmarks", {
   note: text("note"),
 });
 
+// ─── Story Submissions ───
+export const submissions = mysqlTable("submissions", {
+  id: serial("id").primaryKey(),
+  submitterName: varchar("submitter_name", { length: 255 }).notNull(),
+  submitterEmail: varchar("submitter_email", { length: 320 }),
+  title: varchar("title", { length: 512 }).notNull(),
+  summary: text("summary").notNull(),
+  content: text("content"),
+  sourceUrl: varchar("source_url", { length: 512 }),
+  category: varchar("category", { length: 64 }),
+  region: varchar("region", { length: 128 }),
+  status: mysqlEnum("status", ["pending", "approved", "rejected"]).default("pending").notNull(),
+  hopeScore: decimal("hope_score", { precision: 4, scale: 3 }),
+  adminNote: text("admin_note"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  reviewedAt: timestamp("reviewed_at"),
+});
+
+// ─── Chat Messages ───
+export const chatMessages = mysqlTable("chat_messages", {
+  id: serial("id").primaryKey(),
+  sessionId: varchar("session_id", { length: 64 }).notNull(),
+  role: mysqlEnum("role", ["user", "assistant"]).notNull(),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // ─── Categories (reference table) ───
 // ─── Users ───
 export const users = mysqlTable("users", {

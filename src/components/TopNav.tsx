@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, Menu, X, LogOut, User, Search } from 'lucide-react';
+import { Menu, X, LogOut, User, Search, Sparkles, Send } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { trpc } from '@/providers/trpc';
 
 const navLinks = [
   { label: 'Home', path: '/' },
   { label: 'Feed', path: '/feed' },
+  { label: 'Bookmarks', path: '/bookmarks' },
   { label: 'Dashboard', path: '/dashboard' },
   { label: 'Bangladesh', path: '/bangladesh' },
-  { label: 'Bookmarks', path: '/bookmarks' },
 ];
 
 export default function TopNav() {
@@ -69,10 +69,14 @@ export default function TopNav() {
 
         <div className="hidden md:flex items-center gap-4">
           <SearchBox />
-          <button className="flex items-center gap-2 px-4 py-1.5 rounded-pill border border-borderlight text-charcoal text-xs font-body font-semibold uppercase tracking-wider hover:bg-gradient-to-b hover:from-coral-bright hover:to-amber hover:text-cream hover:border-transparent transition-all duration-300">
-            <Clock size={14} />
-            Hope Budget
-          </button>
+          <Link to="/chat" className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-peach text-charcoal text-xs font-body font-medium hover:bg-coral-bright hover:text-cream transition-all duration-300">
+            <Sparkles size={12} />
+            AI
+          </Link>
+          <Link to="/submit" className="flex items-center gap-1.5 px-3 py-1.5 rounded-pill bg-gradient-to-b from-coral-bright to-amber text-cream text-xs font-body font-medium hover:scale-105 transition-all">
+            <Send size={12} />
+            Submit
+          </Link>
 
           {isAuthenticated && user ? (
             <div className="flex items-center gap-3">

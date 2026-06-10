@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import TopNav from '@/components/TopNav';
 import BottomNav from '@/components/BottomNav';
 import ToastNotification from '@/components/Toast';
+import FloatingChatButton from '@/components/FloatingChatButton';
 
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const FeedPage = lazy(() => import('@/pages/FeedPage'));
@@ -13,6 +14,8 @@ const BangladeshPage = lazy(() => import('@/pages/BangladeshPage'));
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const AdminPage = lazy(() => import('@/pages/AdminPage'));
 const BookmarksPage = lazy(() => import('@/pages/BookmarksPage'));
+const SubmitPage = lazy(() => import('@/pages/SubmitPage'));
+const ChatPage = lazy(() => import('@/pages/ChatPage'));
 
 function LoadingScreen() {
   return (
@@ -102,6 +105,8 @@ export default function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/bookmarks" element={<BookmarksPage />} />
+              <Route path="/submit" element={<SubmitPage />} />
+              <Route path="/chat" element={<ChatPage />} />
             </Routes>
           </PageTransition>
         </Suspense>
@@ -109,6 +114,7 @@ export default function App() {
 
       <Footer />
       <BottomNav />
+      <FloatingChatButton />
       <ToastNotification />
     </div>
   );

@@ -6,6 +6,8 @@ import { scraperRouter } from "./routers/scraper";
 import { authRouter } from "./routers/auth";
 import { adminRouter } from "./routers/admin";
 import { bookmarkRouter } from "./routers/bookmark";
+import { submissionRouter } from "./routers/submission";
+import { chatRouter } from "./routers/chat";
 
 export const appRouter = createRouter({
   ping: publicQuery.query(() => ({ ok: true, ts: Date.now() })),
@@ -17,6 +19,8 @@ export const appRouter = createRouter({
   auth: authRouter,
   admin: adminRouter,
   bookmark: bookmarkRouter,
+  submission: submissionRouter,
+  chat: chatRouter,
 });
 
 export type AppRouter = typeof appRouter;
