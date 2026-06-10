@@ -8,6 +8,7 @@ import ArticleCard from '@/components/ArticleCard';
 import ScrollReveal from '@/components/ScrollReveal';
 import LuminousHopeOrb from '@/components/LuminousHopeOrb';
 import ShareCardGenerator from '@/components/ShareCardGenerator';
+import CommentSection from '@/components/CommentSection';
 
 function RadarChart({ scores, size = 280 }: { scores: number[]; size?: number }) {
   const colors = ['#E8644B', '#F4A261', '#C45C3E', '#F4D0C4', '#9B4D36'];
@@ -221,6 +222,9 @@ export default function ArticlePage() {
             })}
           </div>
         </ScrollReveal>
+
+        {/* Comments */}
+        <CommentSection articleId={articleId} />
 
         {/* Share Card Generator Modal */}
         <ShareCardGenerator

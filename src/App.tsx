@@ -77,6 +77,15 @@ function Footer() {
           </div>
         </div>
         <div className="border-t border-borderlight pt-6">
+          {/* Email signup */}
+          <div className="max-w-md mx-auto mb-8 text-center">
+            <h4 className="font-display text-lg text-charcoal mb-2">Get Your Morning Brief</h4>
+            <p className="font-body text-sm text-warmgrey mb-3">Daily good news, ranked by Hope Score, delivered to your inbox.</p>
+            <div className="flex gap-2">
+              <input type="email" placeholder="your@email.com" className="flex-1 px-4 py-2 rounded-pill border border-borderlight bg-cream font-body text-sm focus:outline-none focus:border-coral" />
+              <button className="px-5 py-2 rounded-pill bg-gradient-to-b from-coral-bright to-amber text-cream font-body text-sm font-medium hover:scale-105 transition-all">Subscribe</button>
+            </div>
+          </div>
           <p className="caption-style text-warmgrey text-center">
             &copy; 2026 BrightSide. All rights reserved.
           </p>
