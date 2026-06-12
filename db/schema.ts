@@ -130,6 +130,19 @@ export const userReadingHistory = mysqlTable("user_reading_history", {
   actionTaken: varchar("action_taken", { length: 64 }),
 });
 
+// ─── Scraper Run History ───
+export const scraperRuns = mysqlTable("scraper_runs", {
+  id: serial("id").primaryKey(),
+  startedAt: timestamp("started_at").notNull().defaultNow(),
+  completedAt: timestamp("completed_at"),
+  status: varchar("status", { length: 32 }).notNull().default("running"), // running, completed, failed
+  sourcesScraped: int("sources_scraped").default(0),
+  articlesFound: int("articles_found").default(0),
+  articlesNew: int("articles_new").default(0),
+  errors: text("errors"), // JSON array of error strings
+  triggeredBy: varchar("triggered_by", { length: 32 }).default("manual"), // manual, auto, scheduled
+});
+
 export const categories = mysqlTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 64 }).notNull(),

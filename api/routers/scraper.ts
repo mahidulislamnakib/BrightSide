@@ -1,9 +1,16 @@
 import { z } from "zod";
 import { createRouter, publicQuery } from "../middleware";
-import { scrapeAllSources, scrapeSource, getScraperSources } from "../services/scraper";
+import {
+  scrapeAllSources,
+  scrapeAllSourcesBackground,
+  scrapeSource,
+  getScraperSources,
+  getScraperStatus,
+  getScraperHistory,
+} from "../services/scraper";
 
 export const scraperRouter = createRouter({
-  // Trigger a full scrape of all sources
+  // Trigger a full scrape of all sources (blocks until done)
   scrape: publicQuery
     .input(z.object({ force: z.boolean().optional() }).optional())
     .mutation(async () => {
@@ -12,9 +19,24 @@ export const scraperRouter = createRouter({
         success: true,
         results,
         totalNew: results.reduce((sum, r) => sum + r.newArticles, 0),
+        totalFetched: results.reduce((sum, r) => sum + r.fetched, 0),
         totalErrors: results.reduce((sum, r) => sum + r.errors.length, 0),
+        sources: results.length,
       };
     }),
+
+  // Trigger background scrape (returns immediately, scrapes in background)
+  scrapeBackground: publicQuery.mutation(async () => {
+    // Fire and forget - the caller should use ctx.waitUntil in production
+    const results = await scrapeAllSourcesBackground();
+    return {
+      success: true,
+      message: "Background scrape completed",
+      totalNew: results.reduce((sum, r) => sum + r.newArticles, 0),
+      totalFetched: results.reduce((sum, r) => sum + r.fetched, 0),
+      sources: results.length,
+    };
+  }),
 
   // Scrape a single source by name
   scrapeSource: publicQuery
@@ -35,4 +57,16 @@ export const scraperRouter = createRouter({
   sources: publicQuery.query(async () => {
     return getScraperSources();
   }),
+
+  // Get scraper status dashboard
+  status: publicQuery.query(async () => {
+    return getScraperStatus();
+  }),
+
+  // Get scraper run history
+  history: publicQuery
+    .input(z.object({ limit: z.number().min(1).max(50).optional() }).optional())
+    .query(async ({ input }) => {
+      return getScraperHistory(input?.limit ?? 10);
+    }),
 });
