@@ -29,26 +29,17 @@ export interface CategoryInfo {
 }
 
 export const CATEGORIES: CategoryInfo[] = [
-  { name: 'Health', emoji: '⚕️', articleCount: 142, avgHopeScore: 0.78 },
-  { name: 'Environment', emoji: '🌿', articleCount: 98, avgHopeScore: 0.71 },
-  { name: 'Innovation', emoji: '💡', articleCount: 156, avgHopeScore: 0.75 },
-  { name: 'Community', emoji: '🤝', articleCount: 203, avgHopeScore: 0.65 },
-  { name: 'Economic', emoji: '📈', articleCount: 87, avgHopeScore: 0.72 },
-  { name: 'Peace', emoji: '🕊️', articleCount: 64, avgHopeScore: 0.80 },
+  { name: 'Health', emoji: '\u2695\uFE0F', articleCount: 142, avgHopeScore: 0.78 },
+  { name: 'Environment', emoji: '\uD83C\uDF3F', articleCount: 98, avgHopeScore: 0.71 },
+  { name: 'Innovation', emoji: '\uD83D\uDCA1', articleCount: 156, avgHopeScore: 0.75 },
+  { name: 'Community', emoji: '\uD83E\uDD1D', articleCount: 203, avgHopeScore: 0.65 },
+  { name: 'Economic', emoji: '\uD83D\uDCC8', articleCount: 87, avgHopeScore: 0.72 },
+  { name: 'Peace', emoji: '\uD83D\uDD4A\uFE0F', articleCount: 64, avgHopeScore: 0.80 },
 ];
 
 export const REGIONS = [
-  'Rwanda', 'Colombia', 'Bangladesh', 'Global', 'USA',
-  'Kenya', 'India', 'Brazil', 'Nigeria', 'Nepal'
-];
-
-export const BANGLADESH_CATEGORIES = [
-  'Climate Adaptation',
-  'Economic Empowerment',
-  'Education',
-  'Health',
-  'Innovation',
-  'Community',
+  'Rwanda', 'Colombia', 'Kenya', 'India', 'Brazil', 'Nigeria', 'Nepal',
+  'Global', 'USA', 'Germany', 'Norway', 'South Africa', 'Indonesia',
 ];
 
 export const articles: Article[] = [
@@ -80,9 +71,9 @@ export const articles: Article[] = [
   },
   {
     id: '2',
-    title: "How Medellín Transformed From Murder Capital to Innovation Hub",
+    title: "How Medell\u00EDn Transformed From Murder Capital to Innovation Hub",
     summary: "Colombia's second-largest city achieved an 80% reduction in homicides through cable cars, library-parks, and community investment.",
-    content: `Three decades ago, Medellín was the most dangerous city in the world. Today, it is a UNESCO City of Learning and a global model for urban transformation. The journey from murder capital to innovation hub holds lessons for cities worldwide.`,
+    content: `Three decades ago, Medell\u00EDn was the most dangerous city in the world. Today, it is a UNESCO City of Learning and a global model for urban transformation. The journey from murder capital to innovation hub holds lessons for cities worldwide.`,
     url: '#',
     imageUrl: '/assets/card-community.jpg',
     publishedAt: '2026-06-09T14:30:00Z',
@@ -101,27 +92,6 @@ export const articles: Article[] = [
   },
   {
     id: '3',
-    title: "Bangladesh Village Builds Floating Gardens to Beat Floods",
-    summary: "Farmers in flood-prone regions are producing 3 tons of vegetables monthly using water hyacinth and bamboo rafts.",
-    content: `In the flood-prone wetlands of southern Bangladesh, a centuries-old agricultural technique is being revived with modern twists. Floating gardens -- rafts woven from water hyacinth and bamboo -- are allowing farmers to grow crops even when their land is submerged for months.`,
-    url: '#',
-    imageUrl: '/assets/bangladesh-climate.jpg',
-    publishedAt: '2026-06-09T10:00:00Z',
-    source: 'BRAC Reports',
-    sourceTrust: 0.90,
-    region: 'Bangladesh',
-    regionTier: 'underreported',
-    category: 'Environment',
-    hopeScore: 0.76,
-    verifiedFacts: 0.80,
-    systemicImpact: 0.78,
-    actionability: 0.68,
-    novelty: 0.74,
-    representation: 0.90,
-    tier: 'verified',
-  },
-  {
-    id: '4',
     title: "Scientists Develop Plastic-Eating Enzyme That Works in Hours",
     summary: "MIT researchers have engineered an enzyme that breaks down PET plastic 6 times faster than previous versions.",
     content: `Researchers at MIT have developed a new variant of the PETase enzyme that can break down polyethylene terephthalate (PET) plastic six times faster than previous versions, potentially revolutionizing recycling processes worldwide.`,
@@ -142,7 +112,7 @@ export const articles: Article[] = [
     tier: 'verified',
   },
   {
-    id: '5',
+    id: '4',
     title: "Strangers Raise $50,000 for Homeless Man Who Returned Wallet",
     summary: "A community fundraiser secured an apartment and fresh start for a man who chose honesty over desperation.",
     content: `When James Robertson found a wallet containing $2,300 in cash on a Chicago street corner, he didn't hesitate. Despite being homeless for three years, he walked three miles to return it to its owner. What happened next changed his life.`,
@@ -163,15 +133,15 @@ export const articles: Article[] = [
     tier: 'constructive',
   },
   {
-    id: '6',
+    id: '5',
     title: "Kenya Launches Africa's Largest Electric Bus Fleet",
     summary: "Nairobi's new fleet of 200 electric buses will reduce city transport emissions by 35% within two years.",
     content: `Nairobi has launched the largest electric bus fleet in Africa, with 200 zero-emission vehicles hitting the streets this month. The $85 million initiative, funded through a public-private partnership, aims to reduce the city's transport emissions by 35% within two years.`,
     url: '#',
     imageUrl: '/assets/card-environment.jpg',
     publishedAt: '2026-06-07T09:00:00Z',
-    source: 'The Daily Star',
-    sourceTrust: 0.78,
+    source: 'Reuters',
+    sourceTrust: 0.94,
     region: 'Kenya',
     regionTier: 'developing',
     category: 'Environment',
@@ -184,7 +154,7 @@ export const articles: Article[] = [
     tier: 'verified',
   },
   {
-    id: '7',
+    id: '6',
     title: "Nepal's All-Female Ranger Unit Protects Endangered Rhinos",
     summary: "The first all-female anti-poaching unit in Chitwan National Park has achieved zero rhino poaching for 18 consecutive months.",
     content: `In Chitwan National Park, a team of 42 female rangers is rewriting the rules of wildlife conservation. Since their deployment 18 months ago, rhino poaching in their sector has dropped to zero -- a first in the park's 50-year history.`,
@@ -205,10 +175,10 @@ export const articles: Article[] = [
     tier: 'gold',
   },
   {
-    id: '8',
+    id: '7',
     title: "Brazilian Favela Youth Code Their Way Out of Poverty",
     summary: "A coding bootcamp in Rio's favelas has placed 3,000 graduates in tech jobs with an average salary of $45,000.",
-    content: `In the narrow alleys of Complexo do Alemão, one of Rio de Janeiro's largest favelas, a quiet revolution is taking place. Young people who once faced limited prospects are now writing code for some of Brazil's biggest tech companies.`,
+    content: `In the narrow alleys of Complexo do Alem\u00E3o, one of Rio de Janeiro's largest favelas, a quiet revolution is taking place. Young people who once faced limited prospects are now writing code for some of Brazil's biggest tech companies.`,
     url: '#',
     imageUrl: '/assets/card-community.jpg',
     publishedAt: '2026-06-06T11:00:00Z',
@@ -226,7 +196,7 @@ export const articles: Article[] = [
     tier: 'verified',
   },
   {
-    id: '9',
+    id: '8',
     title: "New Malaria Vaccine Shows 94% Efficacy in Phase 3 Trials",
     summary: "A new RNA-based malaria vaccine developed by a Nigerian-German research partnership shows unprecedented protection.",
     content: `A groundbreaking malaria vaccine has shown 94% efficacy in Phase 3 clinical trials, potentially saving hundreds of thousands of lives annually. The vaccine, developed through a partnership between Nigerian and German researchers, represents a major leap forward in the fight against one of humanity's oldest diseases.`,
@@ -247,7 +217,7 @@ export const articles: Article[] = [
     tier: 'gold',
   },
   {
-    id: '10',
+    id: '9',
     title: "Indian Villages Achieve 100% Solar Power Independence",
     summary: "A cluster of 12 villages in Rajasthan now runs entirely on solar energy, eliminating grid dependency entirely.",
     content: `In the sun-baked landscape of rural Rajasthan, a clean energy revolution is unfolding. Twelve villages, once plagued by daily power outages, have achieved complete energy independence through a community-managed solar microgrid system.`,
@@ -268,33 +238,51 @@ export const articles: Article[] = [
     tier: 'gold',
   },
   {
-    id: '11',
-    title: "Bangladesh's Solar Home Systems Reach 6 Million Households",
-    summary: "The world's largest off-grid solar program has now powered 6 million rural homes, creating 100,000 green jobs.",
-    content: `Bangladesh's Infrastructure Development Company Limited (IDCOL) has achieved a historic milestone: 6 million solar home systems now power rural households across the country. The program, which began in 2003, has become the world's largest off-grid renewable energy initiative.`,
+    id: '10',
+    title: "Norway Becomes First Nation to Ban Deep-Sea Mining",
+    summary: "Parliament voted unanimously to protect the Arctic seabed, setting a precedent for ocean conservation worldwide.",
+    content: `In a historic decision, Norway's parliament voted unanimously to ban all deep-sea mining activities in its territorial waters, becoming the first nation to take such a step. The decision protects one of the world's most pristine Arctic seabed ecosystems and sets a powerful precedent for ocean conservation worldwide.`,
     url: '#',
-    imageUrl: '/assets/bangladesh-education.jpg',
+    imageUrl: '/assets/card-environment.jpg',
     publishedAt: '2026-06-05T06:00:00Z',
-    source: 'IDCOL',
-    sourceTrust: 0.88,
-    region: 'Bangladesh',
-    regionTier: 'underreported',
-    category: 'Innovation',
+    source: 'The Guardian',
+    sourceTrust: 0.91,
+    region: 'Norway',
+    regionTier: 'western',
+    category: 'Environment',
     hopeScore: 0.91,
+    verifiedFacts: 0.94,
+    systemicImpact: 0.92,
+    actionability: 0.68,
+    novelty: 0.86,
+    representation: 0.60,
+    tier: 'gold',
+  },
+  {
+    id: '11',
+    title: "Germany Hits 80% Renewable Energy Milestone",
+    summary: "For the first time, renewable sources powered 80% of Germany's grid for a full week, proving large-scale transition is viable.",
+    content: `Germany has achieved a historic milestone in its energy transition: for seven consecutive days, renewable energy sources -- wind, solar, and hydro -- powered over 80% of the country's electricity grid. The achievement, recorded in late May, demonstrates that a large industrial economy can run predominantly on clean energy.`,
+    url: '#',
+    imageUrl: '/assets/card-innovation.jpg',
+    publishedAt: '2026-06-04T14:00:00Z',
+    source: 'CleanTechnica',
+    sourceTrust: 0.78,
+    region: 'Germany',
+    regionTier: 'western',
+    category: 'Innovation',
+    hopeScore: 0.89,
     verifiedFacts: 0.92,
-    systemicImpact: 0.94,
-    actionability: 0.72,
-    novelty: 0.70,
-    representation: 0.90,
+    systemicImpact: 0.90,
+    actionability: 0.64,
+    novelty: 0.80,
+    representation: 0.55,
     tier: 'gold',
   },
 ];
 
 export const getFeaturedArticle = (): Article =>
   articles.reduce((best, a) => (a.hopeScore > best.hopeScore ? a : best), articles[0]);
-
-export const getBangladeshArticles = (): Article[] =>
-  articles.filter((a) => a.region === 'Bangladesh');
 
 export const getArticlesByCategory = (category: string): Article[] =>
   articles.filter((a) => a.category === category);
@@ -318,14 +306,14 @@ export const dashboardMetrics = [
 
 export const impactMapRegions = [
   { name: 'Rwanda', lat: -1.94, lng: 29.87, count: 8, score: 0.92 },
-  { name: 'Bangladesh', lat: 23.68, lng: 90.36, count: 12, score: 0.88 },
+  { name: 'India', lat: 20.59, lng: 78.96, count: 14, score: 0.87 },
   { name: 'Colombia', lat: 4.57, lng: -74.30, count: 6, score: 0.82 },
   { name: 'Kenya', lat: -1.29, lng: 36.82, count: 9, score: 0.84 },
   { name: 'Nigeria', lat: 9.08, lng: 8.68, count: 7, score: 0.93 },
   { name: 'Nepal', lat: 28.39, lng: 84.12, count: 5, score: 0.88 },
   { name: 'Brazil', lat: -14.24, lng: -51.93, count: 10, score: 0.79 },
-  { name: 'India', lat: 20.59, lng: 78.96, count: 14, score: 0.87 },
-  { name: 'USA', lat: 37.09, lng: -95.71, count: 4, score: 0.58 },
+  { name: 'Norway', lat: 60.47, lng: 8.47, count: 4, score: 0.91 },
+  { name: 'Germany', lat: 51.17, lng: 10.45, count: 6, score: 0.89 },
 ];
 
 export const localHeroes = [
@@ -337,10 +325,10 @@ export const localHeroes = [
     storyId: '1',
   },
   {
-    name: 'Dr. Farzana Rahman',
-    role: 'STEM Educator, Bangladesh',
+    name: 'Dr. Amara Okafor',
+    role: 'Malaria Researcher, Nigeria',
     avatar: '/assets/avatar-hero-2.jpg',
-    quote: '"When a girl learns science, she changes not just her future, but her entire community."',
-    storyId: '11',
+    quote: '"Science without borders is how we end diseases that know no borders."',
+    storyId: '8',
   },
 ];
