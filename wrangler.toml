@@ -1,0 +1,16 @@
+name = "brightside"
+main = "dist/boot.js"
+compatibility_date = "2026-06-12"
+compatibility_flags = ["nodejs_compat"]
+
+# Static assets
+[site]
+bucket = "dist/public"
+
+[build]
+command = "npm run build"
+
+# Observability
+[observability]
+enabled = true
+head_sampling_rate = 1
