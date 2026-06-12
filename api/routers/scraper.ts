@@ -10,28 +10,29 @@ import {
 } from "../services/scraper";
 
 export const scraperRouter = createRouter({
-  // Trigger a full scrape of all sources (blocks until done)
+  // Trigger a full scrape of all 82 sources (blocks until done)
   scrape: publicQuery
     .input(z.object({ force: z.boolean().optional() }).optional())
     .mutation(async () => {
       const results = await scrapeAllSources();
+      const successCount = results.filter((r) => r.fetched > 0).length;
       return {
         success: true,
         results,
         totalNew: results.reduce((sum, r) => sum + r.newArticles, 0),
         totalFetched: results.reduce((sum, r) => sum + r.fetched, 0),
         totalErrors: results.reduce((sum, r) => sum + r.errors.length, 0),
-        sources: results.length,
+        sourcesReached: successCount,
+        totalSources: results.length,
       };
     }),
 
-  // Trigger background scrape (returns immediately, scrapes in background)
+  // Background scrape — returns immediately
   scrapeBackground: publicQuery.mutation(async () => {
-    // Fire and forget - the caller should use ctx.waitUntil in production
     const results = await scrapeAllSourcesBackground();
     return {
       success: true,
-      message: "Background scrape completed",
+      message: "Universal scrape completed",
       totalNew: results.reduce((sum, r) => sum + r.newArticles, 0),
       totalFetched: results.reduce((sum, r) => sum + r.fetched, 0),
       sources: results.length,
@@ -53,7 +54,7 @@ export const scraperRouter = createRouter({
       return { success: true, result };
     }),
 
-  // List configured scraper sources
+  // List all configured sources
   sources: publicQuery.query(async () => {
     return getScraperSources();
   }),

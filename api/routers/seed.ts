@@ -4,19 +4,21 @@ import { articles, sources, categories } from "@db/schema";
 import { getArticleCount } from "../queries/articles";
 
 const SEED_SOURCES = [
-  { name: "Solutions Journalism Network", url: "https://solutionsjournalism.org", category: "investigative" as const, trustScore: "0.95", regionFocus: "Global" },
   { name: "Positive.News", url: "https://positive.news", category: "human_curated" as const, trustScore: "0.82", regionFocus: "Global" },
   { name: "Good News Network", url: "https://goodnewsnetwork.org", category: "human_curated" as const, trustScore: "0.75", regionFocus: "USA" },
-  { name: "Optimist Daily", url: "https://optimistdaily.com", category: "human_curated" as const, trustScore: "0.78", regionFocus: "Global" },
-  { name: "Reasons to be Cheerful", url: "https://reasonstobecheerful.world", category: "investigative" as const, trustScore: "0.88", regionFocus: "Global" },
-  { name: "Future Crunch", url: "https://futurecrunch.com", category: "human_curated" as const, trustScore: "0.85", regionFocus: "Global" },
-  { name: "Yes! Magazine", url: "https://yesmagazine.org", category: "investigative" as const, trustScore: "0.87", regionFocus: "USA" },
-  { name: "World Economic Forum", url: "https://weforum.org", category: "institutional" as const, trustScore: "0.92", regionFocus: "Global" },
+  { name: "Solutions Journalism Network", url: "https://solutionsjournalism.org", category: "investigative" as const, trustScore: "0.95", regionFocus: "Global" },
+  { name: "The Guardian", url: "https://theguardian.com", category: "institutional" as const, trustScore: "0.91", regionFocus: "Global" },
+  { name: "BBC News", url: "https://bbc.com", category: "institutional" as const, trustScore: "0.93", regionFocus: "Global" },
+  { name: "NPR", url: "https://npr.org", category: "institutional" as const, trustScore: "0.92", regionFocus: "USA" },
+  { name: "Reuters", url: "https://reuters.com", category: "institutional" as const, trustScore: "0.94", regionFocus: "Global" },
+  { name: "Nature", url: "https://nature.com", category: "academic" as const, trustScore: "0.98", regionFocus: "Global" },
+  { name: "WHO", url: "https://who.int", category: "institutional" as const, trustScore: "0.95", regionFocus: "Global" },
   { name: "UNDP", url: "https://undp.org", category: "institutional" as const, trustScore: "0.93", regionFocus: "Global" },
-  { name: "The Better India", url: "https://thebetterindia.com", category: "community" as const, trustScore: "0.76", regionFocus: "India" },
-  { name: "Fast Company - Impact", url: "https://fastcompany.com", category: "investigative" as const, trustScore: "0.83", regionFocus: "Global" },
+  { name: "World Bank", url: "https://worldbank.org", category: "institutional" as const, trustScore: "0.94", regionFocus: "Global" },
   { name: "Stanford Social Innovation", url: "https://ssir.org", category: "academic" as const, trustScore: "0.94", regionFocus: "Global" },
-  { name: "Global Citizen", url: "https://globalcitizen.org", category: "human_curated" as const, trustScore: "0.81", regionFocus: "Global" },
+  { name: "EcoWatch", url: "https://ecowatch.com", category: "environment" as const, trustScore: "0.80", regionFocus: "Global" },
+  { name: "Devex", url: "https://devex.com", category: "institutional" as const, trustScore: "0.89", regionFocus: "Global" },
+  { name: "The Better India", url: "https://thebetterindia.com", category: "community" as const, trustScore: "0.76", regionFocus: "India" },
 ];
 
 const SEED_CATEGORIES = [
