@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LocaleProvider } from '@/contexts/LocaleContext';
 import TopNav from '@/components/TopNav';
@@ -11,7 +11,7 @@ const HomePage = lazy(() => import('@/pages/HomePage'));
 const FeedPage = lazy(() => import('@/pages/FeedPage'));
 const ArticlePage = lazy(() => import('@/pages/ArticlePage'));
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
-const BangladeshPage = lazy(() => import('@/pages/BangladeshPage'));
+const GlobalPage = lazy(() => import('@/pages/GlobalPage'));
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const AdminPage = lazy(() => import('@/pages/AdminPage'));
 const BookmarksPage = lazy(() => import('@/pages/BookmarksPage'));
@@ -56,7 +56,8 @@ export default function App() {
                 <Route path="/feed" element={<FeedPage />} />
                 <Route path="/article/:id" element={<ArticlePage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/bangladesh" element={<BangladeshPage />} />
+                <Route path="/global" element={<GlobalPage />} />
+                <Route path="/bangladesh" element={<GlobalPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/bookmarks" element={<BookmarksPage />} />
@@ -76,55 +77,75 @@ export default function App() {
   );
 }
 
+import { useLocale } from '@/contexts/LocaleContext';
+import { t } from '@/lib/i18n';
+
 function Footer() {
+  const { locale } = useLocale();
+
   return (
-    <footer className="bg-cream border-t border-borderlight/60 pt-12 pb-8 md:pb-8 px-6">
+    <footer className="bg-cream border-t border-borderlight/60 pt-14 pb-8 px-6">
       <div className="max-w-[1200px] mx-auto">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-8">
+        {/* Top Row */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
           <div>
-            <span className="font-display text-xl text-charcoal">BrightSide</span>
-            <p className="font-body text-sm text-warmgrey mt-1">Hope, engineered.</p>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-6 h-6 rounded-md bg-gradient-to-br from-coral-bright to-amber flex items-center justify-center">
+                <span className="font-display text-cream text-xs font-bold">B</span>
+              </div>
+              <span className="font-display text-lg text-charcoal">BrightSide</span>
+            </div>
+            <p className="font-body text-xs text-warmgrey">Hope, engineered.</p>
           </div>
-          <nav className="flex flex-wrap items-center gap-6">
+          <nav className="flex flex-wrap items-center gap-5">
             {[
-              { label: 'Feed', path: '/feed' },
-              { label: 'Dashboard', path: '/dashboard' },
-              { label: 'Global', path: '/bangladesh' },
+              { label: t('feed', locale), path: '/feed' },
+              { label: t('dashboard', locale), path: '/dashboard' },
+              { label: t('global', locale), path: '/global' },
               { label: 'About', path: '#' },
             ].map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.path}
-                className="font-body text-sm text-charcoal hover:text-coral transition-colors duration-150"
+                to={link.path}
+                className="font-body text-sm text-charcoal/70 hover:text-coral transition-colors duration-150"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
-          <div className="text-right">
-            <p className="caption-style text-warmgrey">Built with hope</p>
-            <div className="flex gap-4 mt-2">
-              <a href="#" className="caption-style text-warmgrey hover:text-coral transition-colors">
-                Privacy
-              </a>
-              <a href="#" className="caption-style text-warmgrey hover:text-coral transition-colors">
-                Terms
-              </a>
+        </div>
+
+        {/* Email Signup */}
+        <div className="border-t border-borderlight/60 pt-8 pb-8">
+          <div className="max-w-md mx-auto text-center">
+            <h4 className="font-display text-lg text-charcoal mb-1">{t('morningBriefTitle', locale)}</h4>
+            <p className="font-body text-sm text-warmgrey mb-4">{t('morningBriefDesc', locale)}</p>
+            <div className="flex gap-2">
+              <input
+                type="email"
+                placeholder="your@email.com"
+                className="flex-1 px-4 py-2.5 rounded-pill border border-borderlight bg-cream font-body text-sm focus:outline-none focus:border-coral-bright/50 focus:shadow-sm transition-all"
+              />
+              <button className="px-5 py-2.5 rounded-pill bg-gradient-to-b from-coral-bright to-amber text-cream font-body text-sm font-medium hover:scale-105 transition-all shadow-sm">
+                {t('subscribe', locale)}
+              </button>
             </div>
           </div>
         </div>
-        <div className="border-t border-borderlight pt-6">
-          <div className="max-w-md mx-auto mb-8 text-center">
-            <h4 className="font-display text-lg text-charcoal mb-2">Get Your Morning Brief</h4>
-            <p className="font-body text-sm text-warmgrey mb-3">Daily good news, ranked by Hope Score, delivered to your inbox.</p>
-            <div className="flex gap-2">
-              <input type="email" placeholder="your@email.com" className="flex-1 px-4 py-2 rounded-pill border border-borderlight bg-cream font-body text-sm focus:outline-none focus:border-coral" />
-              <button className="px-5 py-2 rounded-pill bg-gradient-to-b from-coral-bright to-amber text-cream font-body text-sm font-medium hover:scale-105 transition-all">Subscribe</button>
-            </div>
-          </div>
-          <p className="caption-style text-warmgrey text-center">
-            &copy; 2026 BrightSide. All rights reserved.
+
+        {/* Bottom Row */}
+        <div className="border-t border-borderlight/40 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="caption-style text-warmgrey/60">
+            &copy; 2026 BrightSide. {t('hopeIsPractice', locale)}
           </p>
+          <div className="flex gap-5">
+            <a href="#" className="font-body text-xs text-warmgrey/60 hover:text-coral transition-colors">
+              Privacy
+            </a>
+            <a href="#" className="font-body text-xs text-warmgrey/60 hover:text-coral transition-colors">
+              Terms
+            </a>
+          </div>
         </div>
       </div>
     </footer>

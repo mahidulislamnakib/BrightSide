@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, TrendingUp, BookOpen, Globe } from 'lucide-react';
 import WarmParticleFlow from '@/components/WarmParticleFlow';
 import LuminousHopeOrb from '@/components/LuminousHopeOrb';
 import ScrollReveal from '@/components/ScrollReveal';
@@ -16,12 +16,12 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.3 },
+    transition: { staggerChildren: 0.12, delayChildren: 0.2 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
@@ -47,10 +47,15 @@ export default function HomePage() {
     setTimeout(() => refetch(), 1000);
   }
 
+  const storyCount = allArticles?.length ? allArticles.length * 113 + 47 : 1247;
+  const avgScore = allArticles?.length
+    ? (allArticles.reduce((sum, a) => sum + Number(a.hopeScore), 0) / allArticles.length).toFixed(2)
+    : '0.72';
+
   const stats = [
-    { value: allArticles?.length ? allArticles.length * 113 + 47 : 1247, labelKey: 'storiesToday', suffix: '' },
-    { value: 0.72, labelKey: 'avgHopeScore', suffix: '' },
-    { value: 47, labelKey: 'countries', suffix: '' },
+    { value: storyCount, label: 'stories today', suffix: '' },
+    { value: avgScore, label: 'avg hope score', suffix: '' },
+    { value: 47, label: 'countries', suffix: '' },
   ];
 
   // Merge static category info with dynamic stats
@@ -74,9 +79,9 @@ export default function HomePage() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 text-center px-6 max-w-[680px] mx-auto"
+          className="relative z-10 text-center px-6 max-w-[700px] mx-auto"
         >
-          <motion.span variants={itemVariants} className="caption-style text-coral inline-block mb-6 tracking-[0.12em]">
+          <motion.span variants={itemVariants} className="caption-style text-coral inline-block mb-5 tracking-[0.12em]">
             {t('todayProgress', locale)}
           </motion.span>
 
@@ -84,26 +89,26 @@ export default function HomePage() {
             {t('heroTitle', locale)}
           </motion.h1>
 
-          <motion.p variants={itemVariants} className="font-body text-base text-warmgrey leading-relaxed max-w-[480px] mx-auto mb-10">
+          <motion.p variants={itemVariants} className="font-body text-base md:text-lg text-warmgrey leading-relaxed max-w-[500px] mx-auto mb-10">
             {t('heroSubtitle', locale)}
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Link to="/feed" className="px-8 py-3.5 rounded-button bg-gradient-to-b from-coral-bright to-amber text-cream font-body text-[15px] font-medium hover:scale-[1.02] hover:shadow-lg transition-all duration-250">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-14">
+            <Link to="/feed" className="px-8 py-3.5 rounded-button bg-gradient-to-b from-coral-bright to-amber text-cream font-body text-[15px] font-medium hover:scale-[1.02] hover:shadow-lg transition-all duration-250 shadow-card">
               {t('readStories', locale)}
             </Link>
-            <button className="px-8 py-3.5 rounded-button border-[1.5px] border-charcoal text-charcoal font-body text-[15px] font-medium hover:bg-charcoal hover:text-cream transition-all duration-250">
+            <button className="px-8 py-3.5 rounded-button border-[1.5px] border-charcoal/20 text-charcoal font-body text-[15px] font-medium hover:bg-charcoal hover:text-cream transition-all duration-250">
               {t('hopeBudget', locale)}
             </button>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4">
+          <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-3">
             {stats.map((stat) => (
-              <div key={stat.labelKey} className="glass-light rounded-xl px-6 py-4 min-w-[140px]">
-                <div className="font-display text-3xl md:text-4xl text-charcoal tracking-tight">
-                  {stat.value >= 100 ? Math.round(stat.value).toLocaleString() : stat.value}
+              <div key={stat.label} className="glass-light rounded-2xl px-6 py-4 min-w-[130px]">
+                <div className="font-display text-2xl md:text-3xl text-charcoal tracking-tight">
+                  {stat.suffix}{typeof stat.value === 'number' && stat.value >= 100 ? Math.round(stat.value).toLocaleString() : stat.value}
                 </div>
-                <div className="text-xs font-body text-warmgrey uppercase tracking-wider mt-1">{stat.labelKey === 'storiesToday' ? t('todayProgress', locale).toLowerCase() : stat.labelKey === 'avgHopeScore' ? 'avg hope score' : 'countries'}</div>
+                <div className="text-[10px] font-body text-warmgrey uppercase tracking-wider mt-1">{stat.label}</div>
               </div>
             ))}
           </motion.div>
@@ -124,19 +129,19 @@ export default function HomePage() {
                 <div className="skeleton-shimmer h-4 w-1/2" />
               </div>
             ) : (
-              <div className="glass-light border border-peach-light/50 rounded-card-lg p-6 md:p-10 hover:shadow-featured hover:-translate-y-1 transition-all duration-300">
+              <div className="glass-light border border-peach-light/50 rounded-card-lg p-6 md:p-10 hover:shadow-featured hover:-translate-y-1 transition-all duration-300 cursor-pointer">
                 <div className="flex flex-col md:flex-row gap-8 items-center">
                   <div className="w-full md:w-[55%] aspect-[4/3] rounded-card-lg overflow-hidden flex-shrink-0">
                     <img src={featured.imageUrl ?? ''} alt={featured.title} className="w-full h-full object-cover" />
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 text-left">
                     <div className="flex items-center gap-3 mb-5">
                       <HopeScoreBadge score={Number(featured.hopeScore)} size={48} showLabel />
                     </div>
                     <span className="caption-style px-3.5 py-1 rounded-pill inline-block mb-4 bg-peach text-coral">
                       {featured.category.toUpperCase()}
                     </span>
-                    <h2 className="font-display text-2xl text-charcoal leading-tight mb-3">{featured.title}</h2>
+                    <h2 className="font-display text-2xl md:text-[28px] text-charcoal leading-tight mb-3">{featured.title}</h2>
                     <p className="font-body text-[15px] text-warmgrey leading-relaxed line-clamp-2 mb-5">{featured.summary}</p>
                     <Link to={`/article/${featured.id}`} className="inline-flex items-center gap-2 font-body text-[15px] font-medium text-coral hover:gap-3 transition-all duration-200">
                       {t('readStories', locale)} <ArrowRight size={16} />
@@ -153,8 +158,10 @@ export default function HomePage() {
       <section className="py-20 md:py-28 px-6">
         <div className="max-w-[1200px] mx-auto">
           <ScrollReveal>
-            <h2 className="font-display text-4xl md:text-[44px] text-charcoal text-center mb-4 tracking-tight">{t('discoverTopic', locale)}</h2>
-            <p className="font-body text-base text-warmgrey text-center mb-12 max-w-md mx-auto">{t('bePartSub', locale)}</p>
+            <div className="text-center mb-12">
+              <h2 className="font-display text-4xl md:text-[44px] text-charcoal mb-4 tracking-tight">{t('discoverTopic', locale)}</h2>
+              <p className="font-body text-base text-warmgrey max-w-md mx-auto">{t('bePartSub', locale)}</p>
+            </div>
           </ScrollReveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {categoriesWithStats.map((cat, i) => (
@@ -169,14 +176,29 @@ export default function HomePage() {
         <div className="max-w-[1200px] mx-auto text-center">
           <ScrollReveal>
             <span className="caption-style text-amber tracking-[0.12em] mb-4 block">{t('globalProgress', locale)}</span>
-            <h2 className="font-display text-4xl md:text-[44px] text-cream mb-12 tracking-tight">{t('weekInNews', locale)}</h2>
+            <h2 className="font-display text-4xl md:text-[44px] text-cream mb-14 tracking-tight">{t('weekInNews', locale)}</h2>
           </ScrollReveal>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-16 mb-12">
-            <ProgressCounter value={3} label={t('global', locale).toLowerCase()} inverse />
-            <ProgressCounter value={12} label={t('share', locale).toLowerCase()} inverse />
-            <ProgressCounter value={2.4} suffix="M" label={t('discoverTopic', locale).toLowerCase()} inverse />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 mb-14 max-w-3xl mx-auto">
+            <ScrollReveal delay={0.1}>
+              <div className="glass-dark rounded-card p-6 text-center">
+                <TrendingUp size={24} className="text-amber mx-auto mb-3" />
+                <ProgressCounter value={3} label="milestones reached" inverse />
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.2}>
+              <div className="glass-dark rounded-card p-6 text-center">
+                <BookOpen size={24} className="text-amber mx-auto mb-3" />
+                <ProgressCounter value={12} label="treaties signed" inverse />
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.3}>
+              <div className="glass-dark rounded-card p-6 text-center">
+                <Globe size={24} className="text-amber mx-auto mb-3" />
+                <ProgressCounter value={2.4} suffix="M" label="tons plastic removed" inverse />
+              </div>
+            </ScrollReveal>
           </div>
-          <ScrollReveal delay={0.3}>
+          <ScrollReveal delay={0.4}>
             <div className="border-t border-cream/10 pt-8">
               <Link to="/dashboard" className="inline-flex items-center gap-2 font-body text-[15px] font-medium text-amber hover:gap-3 transition-all duration-200">
                 {t('dashboard', locale)} <ArrowRight size={16} />
@@ -192,10 +214,20 @@ export default function HomePage() {
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-amber rounded-full blur-[100px] animate-pulse" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-coral rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] as const }} className="relative z-10 text-center px-6 max-w-lg mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] as const }}
+          className="relative z-10 text-center px-6 max-w-lg mx-auto"
+        >
           <h2 className="font-display text-4xl md:text-5xl text-cream mb-5 tracking-tight">{t('bePart', locale)}</h2>
           <p className="font-body text-base text-cream/75 leading-relaxed mb-9 max-w-md mx-auto">{t('bePartSub', locale)}</p>
-          <Link to="/feed" className="inline-block px-10 py-4 rounded-button bg-gradient-to-b from-coral-bright to-amber text-cream font-body text-base font-medium hover:scale-105 transition-transform duration-300" style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
+          <Link
+            to="/feed"
+            className="inline-block px-10 py-4 rounded-button bg-gradient-to-b from-coral-bright to-amber text-cream font-body text-base font-medium hover:scale-105 transition-transform duration-300"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
+          >
             {t('getStarted', locale)}
           </Link>
         </motion.div>
