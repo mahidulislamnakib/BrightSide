@@ -11,7 +11,7 @@ const app = new Hono<{ Bindings: HttpBindings }>();
 
 app.use(bodyLimit({ maxSize: 50 * 1024 * 1024 }));
 
-// OAuth callback
+// OAuth callback handler
 app.get("/api/oauth/callback", async (c) => {
   const code = c.req.query("code");
   const state = c.req.query("state");
@@ -27,8 +27,6 @@ app.get("/api/oauth/callback", async (c) => {
 
   try {
     const { sessionToken } = await handleOAuthCallback(code, state);
-
-    // Set session cookie and redirect
     c.header(
       "Set-Cookie",
       `session=${sessionToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`,
@@ -41,9 +39,8 @@ app.get("/api/oauth/callback", async (c) => {
   }
 });
 
-// tRPC handler
+// tRPC API handler
 app.use("/api/trpc/*", async (c) => {
-  // Parse session cookie and add user to context
   const cookie = c.req.header("cookie") || "";
   const sessionMatch = cookie.match(/session=([^;]+)/);
   let user = undefined;
@@ -87,10 +84,15 @@ app.use("/api/trpc/*", async (c) => {
   });
 });
 
+// API 404 handler
 app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
+
+// Static assets are served automatically by Cloudflare Workers Assets
+// with SPA fallback. Do NOT add a catch-all route here.
 
 export default app;
 
+// Node.js production server (local dev only)
 if (env.isProduction) {
   const { serve } = await import("@hono/node-server");
   const { serveStaticFiles } = await import("./lib/vite");

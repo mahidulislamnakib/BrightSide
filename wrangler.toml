@@ -3,14 +3,11 @@ main = "dist/boot.js"
 compatibility_date = "2026-06-12"
 compatibility_flags = ["nodejs_compat"]
 
-# Static assets
-[site]
-bucket = "dist/public"
+# Modern static assets with SPA support
+[assets]
+directory = "dist/public"
+not_found_handling = "single-page-application"
 
-[build]
-command = "npm run build"
-
-# Observability
 [observability]
 enabled = true
 head_sampling_rate = 1
